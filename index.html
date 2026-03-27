@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta
+    name="description"
+    content="Project page for Local Precise Refinement: A Dual-Gated Mixture-of-Experts for Enhancing Foundation Model Generalization against Spectral Shifts.">
+  <meta
+    name="keywords"
+    content="SpectralMoE, Domain Generalization Semantic Segmentation, Mixture-of-Experts, Remote Sensing, Spectral Shift">
+  <title>Local Precise Refinement: A Dual-Gated Mixture-of-Experts for Enhancing Foundation Model Generalization against Spectral Shifts</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./static/ccs/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>SM</text></svg>">
+
+  <style>
+    :root {
+      --bg: #f4f2ec;
+      --surface: rgba(255, 255, 255, 0.82);
+      --surface-strong: #ffffff;
+      --surface-soft: #f7f8f4;
+      --ink: #14213d;
+      --muted: #54606f;
+      --line: rgba(20, 33, 61, 0.12);
+      --teal: #0b7285;
+      --amber: #d97706;
+      --moss: #4d7c0f;
+      --shadow: 0 24px 60px rgba(20, 33, 61, 0.12);
+      --shadow-soft: 0 18px 40px rgba(20, 33, 61, 0.08);
+      --radius-xl: 32px;
+      --radius-lg: 24px;
+      --radius-md: 18px;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(11, 114, 133, 0.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(217, 119, 6, 0.14), transparent 30%),
+        linear-gradient(180deg, #eef4f3 0%, #f4f2ec 24%, #f7f5ef 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(20, 33, 61, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(20, 33, 61, 0.03) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.55), transparent 92%);
+    }
+
+    .page-shell {
+      position: relative;
+      z-index: 1;
+    }
+
+    .container.is-max-paper {
+      max-width: 1120px !important;
+    }
+
+    .hero {
+      padding: 3rem 1.5rem 1.5rem;
+      background: transparent;
+    }
+
+    .hero-panel {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(247, 248, 244, 0.8));
+      box-shadow: var(--shadow);
+      padding: 3rem;
+      backdrop-filter: blur(18px);
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      top: -90px;
+      right: -80px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(11, 114, 133, 0.2), transparent 68%);
+    }
+
+    .hero-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -110px;
+      left: -70px;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(217, 119, 6, 0.16), transparent 68%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.55rem 1rem;
+      border: 1px solid rgba(11, 114, 133, 0.14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.65);
+      color: var(--teal);
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.2rem;
+    }
+
+    .publication-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(2.2rem, 3.6vw, 4rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 1.3rem !important;
+    }
+
+    .title-accent {
+      color: var(--teal);
+    }
+
+    .publication-authors {
+      font-size: 1.12rem;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
+    }
+
+    .publication-authors .author {
+      display: inline-block;
+      margin: 0 0.3rem;
+      font-weight: 500;
+    }
+
+    .affiliation-line {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .venue-line {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      color: var(--amber);
+      font-size: 0.96rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .publication-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.9rem;
+      margin-top: 1.75rem;
+    }
+
+    .publication-links .button {
+      height: auto;
+      padding: 0.9rem 1.25rem;
+      border: none;
+      border-radius: 999px;
+      background: rgba(20, 33, 61, 0.96);
+      color: #fff;
+      font-weight: 600;
+      box-shadow: 0 14px 32px rgba(20, 33, 61, 0.16);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .publication-links .button:hover {
+      transform: translateY(-2px);
+      background: var(--teal);
+      box-shadow: 0 18px 34px rgba(11, 114, 133, 0.2);
+      color: #fff;
+    }
+
+    .publication-links .icon {
+      margin-right: 0.5rem;
+    }
+
+    .page-section {
+      padding: 1.4rem 1.5rem;
+    }
+
+    .section-card {
+      border: 1px solid rgba(255, 255, 255, 0.78);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(16px);
+      padding: 2.2rem;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .section-tag {
+      flex: 0 0 auto;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, rgba(11, 114, 133, 0.18), rgba(217, 119, 6, 0.18));
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    .section-title {
+      font-family: "Space Grotesk", sans-serif;
+      font-size: clamp(1.65rem, 2vw, 2.15rem);
+      letter-spacing: -0.03em;
+      margin: 0;
+      color: var(--ink);
+    }
+
+    .section-lead,
+    .section-card p {
+      font-size: 1.02rem;
+      line-height: 1.82;
+      color: var(--muted);
+    }
+
+    .figure-frame {
+      margin-top: 1.5rem;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+    }
+
+    .figure-frame img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .figure-caption {
+      padding: 1rem 1.2rem 1.15rem;
+      background: var(--surface-soft);
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.96rem;
+      line-height: 1.7;
+    }
+
+    .highlight-card {
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(249, 246, 238, 0.94)),
+        linear-gradient(135deg, rgba(11, 114, 133, 0.1), transparent 40%);
+    }
+
+    .highlight-note {
+      display: inline-block;
+      margin-bottom: 0.9rem;
+      padding: 0.45rem 0.8rem;
+      border-radius: 999px;
+      background: rgba(77, 124, 15, 0.12);
+      color: var(--moss);
+      font-size: 0.92rem;
+      font-weight: 700;
+    }
+
+    .bibtex-box {
+      margin: 0;
+      padding: 1.4rem 1.5rem;
+      border-radius: var(--radius-md);
+      background: #172033;
+      color: #edf2f7;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      overflow-x: auto;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .acknowledgements-list {
+      margin: 1rem 0 0;
+      padding-left: 1.25rem;
+      color: var(--muted);
+    }
+
+    .acknowledgements-list li {
+      margin-bottom: 0.55rem;
+      line-height: 1.7;
+    }
+
+    a {
+      color: var(--teal);
+    }
+
+    a:hover {
+      color: #095c6b;
+    }
+
+    .footer {
+      padding: 1.5rem;
+      background: transparent;
+    }
+
+    .footer-text {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media screen and (max-width: 768px) {
+      .hero {
+        padding: 1.25rem 1rem 0.8rem;
+      }
+
+      .hero-panel {
+        padding: 1.5rem;
+        border-radius: 24px;
+      }
+
+      .page-section {
+        padding: 0.8rem 1rem;
+      }
+
+      .section-card {
+        padding: 1.4rem;
+      }
+
+      .publication-authors .author {
+        display: inline;
+        margin: 0;
+      }
+
+      .publication-links {
+        gap: 0.7rem;
+      }
+
+      .publication-links .button {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <section class="hero">
+      <div class="container is-max-paper">
+        <div class="hero-panel">
+          <div class="hero-content has-text-centered">
+            <div class="eyebrow">
+              <span>SpectralMoE</span>
+              <span>Remote Sensing DGSS</span>
+            </div>
+
+            <h1 class="title publication-title">
+              <span class="title-accent">Local Precise Refinement</span>: A Dual-Gated
+              Mixture-of-Experts for Enhancing Foundation Model Generalization against Spectral Shifts
+            </h1>
+
+            <div class="publication-authors">
+              <span class="author">Xi Chen</span>,
+              <span class="author">Maojun Zhang</span>,
+              <span class="author">Yu Liu</span>,
+              <span class="author">Shen Yan</span>
+            </div>
+
+            <div class="affiliation-line">National University of Defense Technology</div>
+            <div class="venue-line">
+              <span>arXiv Preprint</span>
+              <span>2026</span>
+            </div>
+
+            <div class="publication-links">
+              <a href="https://arxiv.org/abs/2603.13352" target="_blank" rel="noopener noreferrer" class="button">
+                <span class="icon"><i class="ai ai-arxiv"></i></span>
+                <span>arXiv</span>
+              </a>
+              <a href="https://arxiv.org/pdf/2603.13352" target="_blank" rel="noopener noreferrer" class="button">
+                <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                <span>Paper</span>
+              </a>
+              <a href="https://github.com/daxichen/SpectralMoE-main" target="_blank" rel="noopener noreferrer" class="button">
+                <span class="icon"><i class="fab fa-github"></i></span>
+                <span>Code</span>
+              </a>
+              <a href="#citation" class="button">
+                <span class="icon"><i class="fas fa-quote-right"></i></span>
+                <span>Citation</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container is-max-paper">
+        <div class="section-card">
+          <div class="section-heading">
+            <span class="section-tag">01</span>
+            <h2 class="section-title">Abstract</h2>
+          </div>
+
+          <p class="section-lead">
+            Domain Generalization Semantic Segmentation (DGSS) in spectral remote sensing is severely challenged by spectral shifts across diverse acquisition conditions, which cause significant performance degradation for models deployed in unseen domains. While fine-tuning foundation models is a promising direction, existing methods employ global, homogeneous adjustments. This "one-size-fits-all" tuning struggles with the spatial heterogeneity of land cover, causing semantic confusion. We argue that the key to robust DGSS lies not in a single global adaptation, but in performing fine-grained, spatially-adaptive refinement of a foundation model's features. To achieve this, we propose SpectralMoE, a novel fine-tuning framework for DGSS. It operationalizes this principle by utilizing a Mixture-of-Experts (MoE) architecture to perform <strong>local precise refinement</strong> on the foundation model's features, incorporating depth features estimated from selected RGB bands of the spectral remote sensing imagery to guide the fine-tuning process. Specifically, SpectralMoE employs a dual-gated MoE architecture that independently routes visual and depth features to top-k selected experts for specialized refinement, enabling modality-specific adjustments. A subsequent cross-attention mechanism then judiciously fuses the refined structural cues into the visual stream, mitigating semantic ambiguities caused by spectral variations. Extensive experiments show that SpectralMoE sets a new state-of-the-art on multiple DGSS benchmarks across hyperspectral, multispectral, and RGB remote sensing imagery.
+          </p>
+
+          <div class="figure-frame">
+            <img src="./static/images/teaser.png" alt="Teaser figure for SpectralMoE">
+            <div class="figure-caption">
+              Teaser visualization of SpectralMoE for domain generalization semantic segmentation under spectral shifts.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container is-max-paper">
+        <div class="section-card">
+          <div class="section-heading">
+            <span class="section-tag">02</span>
+            <h2 class="section-title">Method Overview</h2>
+          </div>
+
+          <div class="figure-frame">
+            <img src="./static/images/SpectralMoE.png" alt="Overview of the SpectralMoE framework">
+            <div class="figure-caption">
+              <strong>Overview of the proposed SpectralMoE framework.</strong> SpectralMoE is inserted as a lightweight plugin into each layer of frozen VFMs and DFMs. At its core is a <strong>dual-gated MoE</strong> mechanism. A dual-gated network independently routes visual and depth feature tokens to specialized experts, enabling fine-grained, spatially-adaptive adjustments that overcome the limitations of global, homogeneous methods. Following this expert-based refinement, a <strong>Cross-Attention Fusion Module</strong> adaptively injects the robust spatial structural information from the adjusted depth features into the visual features. This fusion process effectively mitigates semantic ambiguity caused by spectral shifts, significantly enhancing the model's cross-domain generalization capability.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container is-max-paper">
+        <div class="section-card highlight-card">
+          <div class="section-heading">
+            <span class="section-tag">03</span>
+            <h2 class="section-title">&#x4f18;&#x5f02;&#x7684;&#x5168;&#x5149;&#x8c31;&#x6cdb;&#x5316;&#x6027;&#x80fd;</h2>
+          </div>
+
+          <span class="highlight-note">Cross-domain generalization</span>
+          <p>SpectralMoE&#x5728;&#x9ad8;&#x5149;&#x8c31;&#x3001;&#x591a;&#x5149;&#x8c31;&#x4ee5;&#x53ca;RGB&#x9065;&#x611f;&#x9886;&#x57df;&#x4e0a;&#x5b9e;&#x73b0;&#x4e86;&#x6700;&#x4f18;&#x7684;&#x6cdb;&#x5316;&#x6027;&#x80fd;&#x3002;</p>
+
+          <div class="figure-frame">
+            <img src="./static/images/GID(cross-sensor).png" alt="Cross-sensor generalization performance on GID">
+            <div class="figure-caption">
+              Quantitative and qualitative evidence of SpectralMoE's strong generalization performance across spectral remote sensing settings.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section" id="citation">
+      <div class="container is-max-paper">
+        <div class="section-card">
+          <div class="section-heading">
+            <span class="section-tag">04</span>
+            <h2 class="section-title">Citation</h2>
+          </div>
+
+          <pre class="bibtex-box"><code>@article{chen2026local,
+  title={Local Precise Refinement: A Dual-Gated Mixture-of-Experts for Enhancing Foundation Model Generalization against Spectral Shifts},
+  author={Chen, Xi and Zhang, Maojun and Liu, Yu and Yan, Shen},
+  journal={arXiv preprint arXiv:2603.13352},
+  year={2026}
+}</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-section">
+      <div class="container is-max-paper">
+        <div class="section-card">
+          <div class="section-heading">
+            <span class="section-tag">05</span>
+            <h2 class="section-title">Acknowledgements</h2>
+          </div>
+
+          <p>Our implementation is mainly based on following repositories. Thanks for their authors.</p>
+          <ul class="acknowledgements-list">
+            <li><a href="https://github.com/open-mmlab/mmsegmentation" target="_blank" rel="noopener noreferrer">MMSegmentation</a></li>
+            <li><a href="https://github.com/w1oves/Rein" target="_blank" rel="noopener noreferrer">Rein</a></li>
+            <li><a href="https://github.com/johnwaynecornell/DepthForge" target="_blank" rel="noopener noreferrer">DepthForge</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container is-max-paper">
+        <div class="footer-text">
+          &copy; 2026 SpectralMoE Authors. Website adapted for this paper homepage.
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
