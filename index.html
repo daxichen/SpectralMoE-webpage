@@ -135,15 +135,32 @@
 
     .publication-title {
       font-family: "Space Grotesk", sans-serif;
-      font-size: clamp(2.2rem, 3.6vw, 4rem);
-      line-height: 1.08;
+      font-size: clamp(2.2rem, 3.4vw, 3.75rem);
+      line-height: 1.03;
       letter-spacing: -0.04em;
       color: var(--ink);
-      margin-bottom: 1.3rem !important;
+      margin: 0 auto 1.3rem !important;
+      max-width: 1040px;
     }
 
-    .title-accent {
+    .title-line {
+      display: block;
+    }
+
+    .title-kicker {
       color: var(--teal);
+      margin-bottom: 0.2rem;
+    }
+
+    .title-main {
+      font-size: 0.96em;
+      margin-bottom: 0.12rem;
+    }
+
+    .title-sub {
+      color: #1d3557;
+      font-size: 0.92em;
+      letter-spacing: -0.03em;
     }
 
     .publication-authors {
@@ -156,6 +173,18 @@
       display: inline-block;
       margin: 0 0.3rem;
       font-weight: 500;
+    }
+
+    .publication-authors .corresponding {
+      color: var(--teal);
+      font-weight: 700;
+    }
+
+    .author-note {
+      margin-top: 0.55rem;
+      color: var(--muted);
+      font-size: 0.94rem;
+      font-style: italic;
     }
 
     .affiliation-line {
@@ -173,6 +202,9 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(217, 119, 6, 0.12);
     }
 
     .publication-links {
@@ -252,6 +284,14 @@
       font-size: 1.02rem;
       line-height: 1.82;
       color: var(--muted);
+      text-align: justify;
+      text-justify: inter-word;
+    }
+
+    .section-lead strong,
+    .figure-caption strong {
+      color: var(--teal);
+      font-weight: 700;
     }
 
     .figure-frame {
@@ -263,10 +303,19 @@
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
     }
 
+    .figure-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1.1rem 1.1rem 0;
+    }
+
     .figure-frame img {
       display: block;
-      width: 100%;
+      width: auto;
+      max-width: 100%;
       height: auto;
+      margin: 0 auto;
     }
 
     .figure-caption {
@@ -276,6 +325,8 @@
       color: var(--muted);
       font-size: 0.96rem;
       line-height: 1.7;
+      text-align: justify;
+      text-justify: inter-word;
     }
 
     .highlight-card {
@@ -369,6 +420,10 @@
         width: 100%;
         justify-content: center;
       }
+
+      .publication-title {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
@@ -384,21 +439,23 @@
             </div>
 
             <h1 class="title publication-title">
-              <span class="title-accent">Local Precise Refinement</span>: A Dual-Gated
-              Mixture-of-Experts for Enhancing Foundation Model Generalization against Spectral Shifts
+              <span class="title-line title-kicker">Local Precise Refinement:</span>
+              <span class="title-line title-main">A Dual-Gated Mixture-of-Experts for Enhancing</span>
+              <span class="title-line">Foundation Model Generalization</span>
+              <span class="title-line title-sub">against Spectral Shifts</span>
             </h1>
 
             <div class="publication-authors">
               <span class="author">Xi Chen</span>,
               <span class="author">Maojun Zhang</span>,
               <span class="author">Yu Liu</span>,
-              <span class="author">Shen Yan</span>
+              <span class="author corresponding">Shen Yan*</span>
             </div>
+            <div class="author-note">* Corresponding author</div>
 
             <div class="affiliation-line">National University of Defense Technology</div>
             <div class="venue-line">
-              <span>arXiv Preprint</span>
-              <span>2026</span>
+              <span>CVPR 2026</span>
             </div>
 
             <div class="publication-links">
@@ -437,9 +494,11 @@
           </p>
 
           <div class="figure-frame">
-            <img src="./static/images/teaser.png" alt="Teaser figure for SpectralMoE">
+            <div class="figure-image">
+              <img src="./static/images/teaser.png" alt="Teaser figure for SpectralMoE">
+            </div>
             <div class="figure-caption">
-              Teaser visualization of SpectralMoE for domain generalization semantic segmentation under spectral shifts.
+              Our <strong>SpectralMoE</strong> achieves (a) comprehensive state-of-the-art performance across spectral remote sensing DGSS benchmarks. This superiority stems from our dual-gated MoE, which enables (b) fine-grained, spatially adaptive adjustments. In the qualitative Grad-CAM visualizations (<strong>top row</strong>), our method produces complete and detailed responses for complex target regions, such as the structures highlighted by the green box, in clear contrast to the diffuse activations of global fine-tuning methods. This enhanced local refinement directly translates into more robust and qualitatively superior segmentation results in unseen domains (<strong>bottom row</strong>).
             </div>
           </div>
         </div>
@@ -455,7 +514,9 @@
           </div>
 
           <div class="figure-frame">
-            <img src="./static/images/SpectralMoE.png" alt="Overview of the SpectralMoE framework">
+            <div class="figure-image">
+              <img src="./static/images/SpectralMoE.png" alt="Overview of the SpectralMoE framework">
+            </div>
             <div class="figure-caption">
               <strong>Overview of the proposed SpectralMoE framework.</strong> SpectralMoE is inserted as a lightweight plugin into each layer of frozen VFMs and DFMs. At its core is a <strong>dual-gated MoE</strong> mechanism. A dual-gated network independently routes visual and depth feature tokens to specialized experts, enabling fine-grained, spatially-adaptive adjustments that overcome the limitations of global, homogeneous methods. Following this expert-based refinement, a <strong>Cross-Attention Fusion Module</strong> adaptively injects the robust spatial structural information from the adjusted depth features into the visual features. This fusion process effectively mitigates semantic ambiguity caused by spectral shifts, significantly enhancing the model's cross-domain generalization capability.
             </div>
@@ -469,14 +530,16 @@
         <div class="section-card highlight-card">
           <div class="section-heading">
             <span class="section-tag">03</span>
-            <h2 class="section-title">&#x4f18;&#x5f02;&#x7684;&#x5168;&#x5149;&#x8c31;&#x6cdb;&#x5316;&#x6027;&#x80fd;</h2>
+            <h2 class="section-title">Experiments</h2>
           </div>
 
-          <span class="highlight-note">Cross-domain generalization</span>
-          <p>SpectralMoE&#x5728;&#x9ad8;&#x5149;&#x8c31;&#x3001;&#x591a;&#x5149;&#x8c31;&#x4ee5;&#x53ca;RGB&#x9065;&#x611f;&#x9886;&#x57df;&#x4e0a;&#x5b9e;&#x73b0;&#x4e86;&#x6700;&#x4f18;&#x7684;&#x6cdb;&#x5316;&#x6027;&#x80fd;&#x3002;</p>
+          <span class="highlight-note">Cross-spectral generalization</span>
+          <p>SpectralMoE achieves state-of-the-art generalization performance across hyperspectral, multispectral, and RGB remote sensing benchmarks.</p>
 
           <div class="figure-frame">
-            <img src="./static/images/GID(cross-sensor).png" alt="Cross-sensor generalization performance on GID">
+            <div class="figure-image">
+              <img src="./static/images/GID(cross-sensor).png" alt="Cross-sensor generalization performance on GID">
+            </div>
             <div class="figure-caption">
               Quantitative and qualitative evidence of SpectralMoE's strong generalization performance across spectral remote sensing settings.
             </div>
